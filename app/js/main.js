@@ -12,43 +12,30 @@ Highcharts.setOptions({
     }
 });
 
-let chartId = document.getElementById("chart-container");
+let chartIdHomePrices = document.getElementById("chart-container-home-prices-2020");
 
-// checks for the chart ID and displays a backup image if the browser can't find it
-setTimeout(function() {
-    if(chartId.innerHTML === "") {
-        // console.log('noId');
-        let chartArea = document.getElementsByClassName("chart-area");
-        for(var i = 0; i < chartArea.length; i++) {
-            chartArea[i].style.display = "none";
-        } 
-        // insert chart screenshot here
-        document.getElementById("chart-fallback").innerHTML += '<img src="https://fm-static.cnbc.com/awsmedia/chart/2019/10/08/chart-error_wide.1570569331252.png" style="width: 100%;max-width:660px">';
-    } else {
-        // console.log('yesId')
-    }
-},500);
 
 function drawHighcharts() {
-    Highcharts.chart(chartId, {
+    Highcharts.chart(chartIdHomePrices, {
         chart: {
-            type: 'bar',
+            type: 'column',
             styledMode: true,
             spacingBottom: 25,
             spacingRight: 100,
-            spacingLeft: 0,
+            spacingLeft: 7,
             spacingTop: 20
         }, 
         title: {
             text: null
         },
         data: {
-            googleSpreadsheetKey: '1YOKb5l2VM4aAB2r20N_1aT_1vEajYrP3U-U3A6lZbC0'
+            googleSpreadsheetKey: '1wEVjd6-3oIid0OL0Hk2AX0NHq_ylu9RFRD3iQt1vuco'
         },
         // for bar charts only
         plotOptions: {
             series: {
-                groupPadding: 0.1
+                groupPadding: 0.1,
+                clip: false
             } 
         },
         // for line charts only
@@ -69,11 +56,7 @@ function drawHighcharts() {
         //     }
         // },
         legend: {
-            align: 'right',
-            symbolRadius: 0,
-            verticalAlign: 'top',
-            x: 10,
-            itemMarginTop: -10
+            enabled: false
         },
         xAxis: {
             labels: {
@@ -92,19 +75,22 @@ function drawHighcharts() {
             title: false,
             labels: {
                 useHTML: true,
-                overflow: 'allow'
+                overflow: 'allow',
+                            formatter: function () {
+                return Highcharts.numberFormat(this.value,0,'.',',');
             },
+            },
+            max: 300000
             // adds commas to thousands
-            // formatter: function () {
-            //     return Highcharts.numberFormat(this.value,0,'.',',');
-            // },
+
         },
         credits: {
             enabled: false
         },
         tooltip: {
             shadow: false,
-            padding: 10
+            padding: 10,
+            valuePrefix: '$'
         },
         responsive: {
             rules: [{
